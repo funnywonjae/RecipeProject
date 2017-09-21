@@ -162,7 +162,6 @@ select#soflow, select#searchType {
 	</div>
 
 	<!-- Scripts -->
-		<script src="/recipe/resources/recipe/script/recipe.js"></script>
 	<script src="/recipe/resources/assets/js/jquery.min.js"></script>
 	<script src="/recipe/resources/assets/js/skel.min.js"></script>
 	<script src="/recipe/resources/assets/js/util.js"></script>

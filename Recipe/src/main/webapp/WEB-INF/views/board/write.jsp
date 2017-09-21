@@ -150,15 +150,10 @@ function material_del(cnt,no){
 }
 
 function material_add(txt,unit,cg,no){
- console.log(txt+unit);
-console.log($("#material_name_"+txt));
-console.log($("#material_name_"+txt).text());
-console.log($("#material_name_"+txt).length);
-
 if(($('#material_name_'+txt)).length==1){
 	alert("이미 추가된 재료입니다.");
-}else{
 	
+}else{
 	$(".material_list_body").append(
 			' <tr class="'+cnt+'" style="font-size:120%">'+
 			'<th class="text-center">'+cg+'</th>'+
@@ -167,12 +162,8 @@ if(($('#material_name_'+txt)).length==1){
 				'<input type="text"  id="material_list_cnt'+cnt+'"style="width:90%; float:left ;align:center; text-align: center;">'+
 				'<p style="align : left; font-size:20px ; float:right" >'+unit+'</p></th>'+
 				'<th class="text-center" id="material_unit'+cnt+'"><a href="javascript:material_del('+cnt+','+no+')">삭제</a></th>'+
-			'</tr>'
-			
+			'</tr>'		
 	 );
-	
-
-
 	if(materialList==""){
 		materialList=no;
 
@@ -189,10 +180,7 @@ $(".search").empty();
 }
 
 $("#material_search").keyup(function() {
-	
-
-	
-					var word = {"word" : $("#material_search").val()}
+				var word = {"word" : $("#material_search").val()}
 					$.ajax({
 								type : 'post',
 								url : '/recipe/board/material_search',
@@ -201,7 +189,6 @@ $("#material_search").keyup(function() {
 								success : function(data) {
 									$(".search").empty();
 									console.log(data);
-
 										$.each(data, function(i, d){
 											$(".search").append(
 													'<div class="col-md-3 col-sm-8"  style="cursor:pointer">'+

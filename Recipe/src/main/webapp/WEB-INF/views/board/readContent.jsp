@@ -3,6 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<!--정수정수이정수와 아이들 - 김원재 -->
 
 <c:set var="usr_id" value="${userInfo}" />
 <c:set var="recipeItem" value="${item}" />
@@ -78,11 +79,13 @@
 		</table>
 
 		<h3>
-			<c:out value="${recipeItem.usr_id}" />
+			<c:out value="작성자 : ${recipeItem.usr_id}" />
 		</h3>
-
+		<div style="min-height: 800px; border: 1px solid gainsboro; ">
 		<c:out value="${recipeItem.recipe_content}" escapeXml="false" />
+		</div>
 	</div>
+	<br><br>
 
 	<div>
 	<%@include file="comment.jsp" %>
@@ -91,41 +94,73 @@
 </form>
 
 <script>
+//수정버튼
+$("#modBtn").click(function() {
+	alert("썸네일 변경은 글쓰기 버튼을 누르시면 가능합니다.");
+	$("#frm").attr("action", "/recipe/board/modContent");
+	$("#frm").submit();
+});
 
+//삭제버튼
+$("#delBtn").click(function() {
+	$("#frm").attr("action", "/recipe/board/delContent");
+	$("#frm").submit();
+});
+
+//.readBtn에 즐겨찾기 추가/해제 버튼을 추가한다.
+
+function bookmarkBtn(val){
+	$(".readBtn").empty();
+	if(val=="del"){
+	$(".readBtn").append(
+		'<input id="bookmark_delBtn" type="button" value="즐겨찾기 해제" onclick="bookmark_del()">' 
+		);
+	}
+	else{
+		$(".readBtn").append(
+			'<input id="bookmark_addBtn" type="button" value="즐겨찾기 추가" onclick="bookmark_add()">' 
+		);
+	}
+}
+
+
+function bookmark_del(){
+	bookmark('/recipe/board/bookmark_del');	
+}
+
+function bookmark_add(){
+	bookmark('/recipe/board/bookmark_add');
+
+}
 
 window.onload = function () {
-
+	
+	//레시피 재료와 나의 냉장고속 레시피를 비교한다.
+	//부족할경우에는 해당 재료칸의 background-color가 변한다.
+	
 	for(var i = 1 ; $("#tr"+i).length;i++){
 		var recipe = Number($("#recipe"+i).text());
 		var compare = $("#compare"+i).text();
 		
 		if((recipe>Number(compare)) ||(typeof Number(compare)!="number")){
  			$("#tr"+i).attr("style","background-color: palevioletred");
-
 		}	
-	
 	}
 
+	//본인이 쓴 글이 아닐경우에만 즐겨찾기 버튼이 나타난다.
 	
 	if("${usr_id.usr_id}"!=''){
 	 if("${usr_id.usr_id}"!=("${recipeItem.usr_id}")){
-	
 		if($("#bno").val()==$("#listhidden").val()){
-			$(".readBtn").append(
-					'<input id="bookmark_delBtn" type="button" value="즐겨찾기 해제" onclick="javascript:bookmark_del();">' 
-			);
-		}
-	
+					bookmarkBtn("del");
+		}	
 	else{
-		$(".readBtn").append(
-				'<input id="bookmark_addBtn" type="button" value="즐겨찾기 추가" onclick="javascript:bookmark_add();">' 
-		
-		);
+				bookmarkBtn("add");
 	}
 	 }
 	}
 }
-
+//버튼을 눌렀을때 ajax통신
 function bookmark(url){
 
 	var bookmarkData = {"bno" : $("#bno").val()} 
@@ -135,51 +170,19 @@ function bookmark(url){
 		data : bookmarkData,
 		success : function(data) {
 			if($("#bookmark_delBtn").length){
-			$(".readBtn").empty();
-			$(".readBtn").append(
-					'<input id="bookmark_addBtn" type="button" value="즐겨찾기 추가" onclick="javascript:bookmark_add();">' 
-			);}
+					bookmarkBtn("add");
+			}
 			else{
-				$(".readBtn").empty();
-				$(".readBtn").append(
-						'<input id="bookmark_delBtn" type="button" value="즐겨찾기 해제" onclick="javascript:bookmark_del();">' 
-				);
+						bookmarkBtn("del");
 			}
 		},
 		error : function(data) {
-			console.log("힝");
+			alert("오류 발생 ");
+			console.log(data);
 		}
 	});
 }
-
-
-function bookmark_del(){
-	bookmark('/recipe/board/bookmark_del');
-	
-}
-
-function bookmark_add(){
-	bookmark('/recipe/board/bookmark_add');
-
-}
-
-
-
-function compareModal(){
-compare_materialBtn.click();
-
-}
-		$("#modBtn").click(function() {
-			alert("썸네일 변경은 글쓰기 버튼을 누르시면 가능합니다.");
-			$("#frm").attr("action", "/recipe/board/modContent");
-			$("#frm").submit();
-
-		});
-		$("#delBtn").click(function() {
-			$("#frm").attr("action", "/recipe/board/delContent");
-			$("#frm").submit();
-
-		});
+		
 
 </script>
 
