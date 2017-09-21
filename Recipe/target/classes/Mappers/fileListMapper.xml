@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.dj.Mappers.filelistMapper">
+  	<!-- 유저 아이디 만들기 회원가입 dto에 북마크 없는데 수정하기 귀찮아서 그냥 스트링으로 집어넣은거 -->
+  	
+	<select id="fileLoad_No" resultType="String">
+		select group_concat(File_INDEX) from filelist where recipe_no=#{no};
+	
+	</select>
+  	
+  	<select id="serverName" parameterType="String" resultType="String">
+  	<![CDATA[
+			select group_concat(curdate(),(select  conv(count_num,16,10) from index_table where category =#{category}));
+  		]]>
+  	
+  	</select>
+  	
+  	
+  	<select id="modServerName" parameterType="String" resultType="String">
+  	<![CDATA[
+			select group_concat(curdate(),(select  conv(#{index},16,10)));
+  		]]>
+  	
+  	</select>
+  	
+	<insert id = "FileListRegist">
+
+	<![CDATA[
+	INSERT INTO FILELIST
+	VALUES(#{file_server}
+	,#{file_index}
+	,#{file_path}
+	,#{file_type},#{recipe_no},#{file_name});
+	]]>
+	
+	</insert>
+	
+  <select id="fileLoad_Index" >
+
+  <![CDATA[  
+			SELECT * FROM filelist   
+			WHERE file_index= #{file_index};
+	]]>
+
+	</select>
+	  <!-- 데이터 변경-->
+  <update id="fileDatachange" >
+
+  <![CDATA[  
+			UPDATE filelist SET 
+	VALUES(#{file_server},  #{file_index},
+	#{file_path}, #{file_type});
+	]]>
+
+	</update>
+
+	  <!-- 데이터 삭제-->
+  <update id="fileDataDelete" >
+
+  <![CDATA[  
+			UPDATE filelist SET 
+	file_ISDELETE=1 WHERE file_INDEX= #{file_INDEX} ;
+	]]>
+
+	</update>
+	
+  </mapper>

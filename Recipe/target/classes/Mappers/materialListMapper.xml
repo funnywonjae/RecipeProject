@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.dj.Mappers.materialListMapper">
+  <!-- 유저 데이터 불러오기 로그인할때 id pwd 체크 있으면 count라는 컬럼으로 1이라는 값이 나옴-->
+  <!-- 리절트 타입 신설  박영태-0828-->
+  <select id="materialListLoad" resultType="com.dj.domain.Material_ListDTO">
+
+  <![CDATA[  
+			SELECT * FROM material_list   
+			;
+	]]>
+
+	</select>
+
+  	<!-- 유저 아이디 만들기 회원가입 dto에 북마크 없는데 수정하기 귀찮아서 그냥 스트링으로 집어넣은거 -->
+	<insert id = "recipeMaterialListRegist">
+
+	<![CDATA[
+	INSERT INTO recipe_material_list
+	VALUES(#{ml_no},#{ml_name}
+	,#{ml_unit}
+	,#{ml_index}
+	,#{cg_name}
+	,#{cg_id}
+	
+	);
+	]]>
+	
+	</insert>
+
+  <!-- 데이터 변경-->
+  <update id="recipeMaterialListDatachange" >
+
+  <![CDATA[  
+			UPDATE USERINFO SET 
+	VALUES(#{ml_no},#{ml_name}
+	,#{ml_unit}
+	,#{ml_index}
+	,#{cg_name}
+	,#{cg_id}
+	);
+	]]>
+
+	</update>
+
+	  <!-- 데이터 삭제?-->
+  <update id="recipeMaterialListDataDelete" >
+
+  <![CDATA[  
+			UPDATE USERINFO SET 
+	ml_ISDELETE=1 WHERE ml_INDEX= #{ml_index} ;
+	]]>
+
+	</update>
+	
+  </mapper>

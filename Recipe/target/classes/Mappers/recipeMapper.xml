@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.dj.Mappers.recipeMapper">
+
+<!-- 검색 기능  -->
+	<select id="searchResultListLoad" resultType="com.dj.domain.RecipeDTO">
+	 <![CDATA[
+	 select *
+	 from recipe
+	 WHERE RECIPE_ISDELETE = 0 AND
+	 	]]>
+	 <include refid="search"></include>
+	 <![CDATA[
+	 order by recipe_no desc
+
+	 ]]>
+	 </select>
+	 
+	 <select id="getIndex"  resultType="String">
+	 select recipe_index from recipe where recipe_no = #{bno}
+	 </select>
+	 
+	<sql id="search">
+	<choose>
+		<when test="type.equals('title')">
+	recipe_title like CONCAT('%',#{word},'%')
+		</when>
+		<when test="type.equals('content')">
+	recipe_content like CONCAT('%',#{word},'%')
+		</when>
+		<when test="type.equals('id')">
+		usr_id like CONCAT('%',#{word},'%')
+		</when>
+	
+		<when test="type.equals('cg')">
+		cg_id = #{word}
+		</when>
+		<otherwise>
+	(usr_id like CONCAT('%',#{word},'%')
+	or recipe_content like CONCAT('%',#{word},'%')
+	or recipe_title like CONCAT('%',#{word},'%'))
+	
+		</otherwise>
+	
+	</choose>
+	</sql>
+
+
+	<select id = "LimitRecipeData" parameterType="java.util.Map"  resultType="com.dj.domain.RecipeDTO">
+
+	
+		select * from recipe WHERE RECIPE_ISDELETE=0  
+		
+		
+		<if test="category != null">
+  	
+		and CG_ID=#{category} 
+		
+ 	 	</if>
+	
+		
+		order by recipe_no desc limit #{cnt},20;
+	
+	
+	</select>
+	
+	<select id = "RandomRecipeData" parameterType="String" resultType="com.dj.domain.RecipeDTO">
+	
+	SELECT * FROM RECIPE  WHERE RECIPE_ISDELETE=0 
+		
+	<if test="value != null">
+  
+	and CG_ID=#{value}
+  </if>
+	
+	ORDER BY RAND() LIMIT 8;
+	
+
+	</select>
+	<!-- 
+	<select id = "RecipeNum" resultType="String">
+	
+	<![CDATA[
+	
+	select conv(group_concat(second,count_num),16,10) 
+	from index_table  where category="recipe";
+	
+	]]>
+	
+	</select>
+ -->
+	<insert id="RecipeRegist">
+  <![CDATA[  
+
+	INSERT INTO RECIPE
+	VALUES(#{recipe_no}, #{recipe_index}, #{usr_id}, #{recipe_content},
+	#{recipe_isdelete},now(),#{recipe_title}, #{cg_id} ,#{cg_name});
+	]]>
+
+	</insert>
+	<!-- 레시피 로드 {i}=글번호 -->
+	<select id="RecipeLoad" resultType="com.dj.domain.RecipeDTO">
+
+  <![CDATA[  
+			SELECT * FROM RECIPE   
+			WHERE RECIPE_NO= #{i} AND RECIPE_ISDELETE=0 ORDER BY RECIPE_NO DESC;
+	]]>
+
+	</select>
+
+	<select id="BookmarkRecipeLoad" resultType="com.dj.domain.RecipeDTO">
+
+		SELECT * FROM RECIPE WHERE RECIPE_ISDELETE = 0 AND
+		RECIPE_NO IN
+		<foreach collection="list" item="item" index="index"
+			separator="," open="(" close=")">
+			#{item.recipe_no}
+		</foreach>
+
+	</select>
+
+
+	<!-- 데이터 변경 -->
+	<update id="RecipeDatachange">
+
+  <![CDATA[  
+			UPDATE RECIPE SET RECIPE_CONTENT=#{recipe_content}
+			, RECIPE_TITLE=#{recipe_title}
+			 where RECIPE_NO=#{recipe_no};
+	]]>
+
+	</update>
+
+	<!-- 데이터 삭제 -->
+	<update id="RecipeDataDelete">
+
+  <![CDATA[  
+			UPDATE RECIPE SET 
+	RECIPE_ISDELETE=1 WHERE RECIPE_NO= #{bno} ;
+	]]>
+
+	</update>
+
+</mapper>

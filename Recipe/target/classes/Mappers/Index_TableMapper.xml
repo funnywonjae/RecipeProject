@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dj.Mappers.Index_TableMapper">
+
+	<select id="selectTableIndex" resultType="String">
+	<![CDATA[
+	
+	select group_concat(first,second,count_num) 
+	as table_index from index_table where category = #{category};
+	
+	]]>
+	
+	</select>
+
+
+	<update id="updateTableIndex">
+	
+	<![CDATA[
+	
+	UPDATE index_table set SECOND = 
+	IF(COUNT_NUM="ffffffff",lpad(hex(conv(second,16,10)+1),4,'0'),second), 
+	COUNT_NUM = if(COUNT_NUM="ffffffff","00000000",lpad(hex(conv(count_num,16,10)+1),8,'0')) 
+	where category =#{category};
+	]]>
+
+	</update>
+
+</mapper>

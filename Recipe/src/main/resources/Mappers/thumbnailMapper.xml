@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.dj.Mappers.thumbnailMapper">
+  <select id="thumbnailLoad" resultType="com.dj.domain.ThumbnailDTO">
+
+  <![CDATA[  
+			SELECT * FROM thumbnail 
+			where recipe_no=#{index};
+	]]>
+
+	</select>
+
+
+	<insert id = "thumbnailRegist">
+
+	<![CDATA[
+	INSERT INTO thumbnail
+		VALUES(#{thumbnail_index},#{thumbnail_server},#{thumbnail_path},
+						#{recipe_no},#{thumbnail_name});
+	]]>
+	
+	</insert>
+
+  <update id="thumbnailDatachange" >
+  <![CDATA[  
+  
+			UPDATE thumbnail SET
+			THUMBNAIL_SERVER=#{thumbnail_server},thumbnail_path=#{thumbnail_path},thumbnail_path=#{thumbnail_path},
+			THUMBNAIL_NAME =#{thumbnail_name}
+			  where recipe_no=#{recipe_no};
+
+	]]>
+
+	</update>
+
+	  <!-- 데이터 삭제?-->
+  <update id="thumbnailDataDelete" >
+
+  <![CDATA[  
+			UPDATE thumbnail SET 
+	ml_ISDELETE=1 WHERE ml_INDEX= #{ml_index} ;
+	]]>
+
+	</update>
+	
+  </mapper>

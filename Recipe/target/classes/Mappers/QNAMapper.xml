@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dj.Mappers.QNAMapper">
+	<!-- 유저 아이디 만들기 회원가입 dto에 북마크 없는데 수정하기 귀찮아서 그냥 스트링으로 집어넣은거 -->
+	<insert id="QNARegist">
+		INSERT INTO QNA
+		VALUES(#{qna_index}, #{qna_content},
+		NOW(),#{qna_grpno},
+		#{qna_depth},
+		#{usr_id},#{qna_isdelete},#{recipe_no});
+	</insert>
+	<!-- 유저 데이터 불러오기 로그인할때 id pwd 체크 있으면 count라는 컬럼으로 1이라는 값이 나옴 -->
+	<select id="QNALoad" resultType="hashmap">
+
+  <![CDATA[  
+			SELECT * FROM QNA   
+			WHERE RECIPE_NO= #{recipe_no} AND QNA_ISDELETE=0 
+			ORDER BY QNA_GRPNO,QNA_DEPTH;
+			
+	]]>
+
+	</select>
+	<!-- 데이터 변경 -->
+	<update id="QNADatachange">
+
+  <![CDATA[  
+			UPDATE QNA SET QNA_CONTENT = #{qna_content} where QNA_INDEX=#{qna_index};
+	]]>
+
+	</update>
+
+	<!-- 데이터 삭제 -->
+	<update id="QNADataDelete">
+
+  <![CDATA[  
+			UPDATE QNA SET 
+	QNA_ISDELETE = 1 WHERE QNA_INDEX= #{qna_index} ;
+	]]>
+
+	</update>
+
+</mapper>

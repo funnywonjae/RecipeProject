@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.dj.Mappers.refrigeratorMapper">
+  <!-- 유저 데이터 불러오기 로그인할때 id pwd 체크 있으면 count라는 컬럼으로 1이라는 값이 나옴-->
+  <select id="refrigeratorLoad" resultType = "com.dj.domain.RefrigeratorDTO">
+<!--  기존 값에서 벨류로 변경 -->
+  <![CDATA[  
+			SELECT
+			 *
+			FROM
+			refrigerator
+			where
+			usr_id 
+			=
+			#{id}   
+			;
+	]]>
+
+	</select>
+
+  	<!-- 냉장고 등록  박영태 0829-->
+	<insert id = "refrigeratorRegist">
+
+	<![CDATA[
+	INSERT INTO refrigerator
+	VALUES(#{usr_id},#{ref_ml_no},#{ref_edate},
+	#{ref_cnt},#{ref_index}
+	);
+	]]>
+	
+	</insert>
+
+  <!-- 데이터 변경?-->
+  <update id="refrigeratorDatachange" >
+
+  <![CDATA[  
+			UPDATE refrigerator SET 
+		ref_ml_no=#{ref_ml_no},
+		ref_edate=#{ref_edate},
+		ref_cnt=#{ref_cnt}
+		where
+	usr_id 
+	=
+	#{usr_id}   
+	;
+	]]>
+
+	</update>
+
+
+	  <!-- 데이터 삭제?-->
+  <delete id="refrigeratorDataDelete" >
+
+  <![CDATA[  
+			delete from projectdb.
+	refrigerator WHERE usr_id = #{id}  
+	]]>
+
+	</delete>
+	
+  </mapper>
