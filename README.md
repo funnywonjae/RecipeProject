@@ -24,4 +24,4 @@
 
 
 <h3>E-R다이어그램</h3>
-![Alt text](https://preview.ibb.co/gmpUB5/image.png)
+<a href="https://ibb.co/kPb9B5"><img src="https://thumb.ibb.co/kPb9B5/image.png" alt="image" border="0"></a>
