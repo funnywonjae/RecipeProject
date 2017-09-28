@@ -56,4 +56,24 @@
 
 <img src="https://i.imgur.com/dOWwzPB.png">
 
+<h2>프로젝트 이미지</h2>
+<h3>회원가입</h3>
+
+<img src="https://imgur.com/bC90DyK">
+
+<h3>로그인</h3>
+
+<img src="https://imgur.com/qHprQ07">
+
+<h3>메인</h3>
+
+<img src="https://imgur.com/NPjCg89">
+
+<h3>냉장고 재료 등록</h3>
+
+<img src="https://imgur.com/MVOvABB">
+
+<h3>레시피를 통한 재료 비교</h3>
+
+<img src="https://imgur.com/le05TK4">
 
